@@ -1,5 +1,4 @@
 import math
-import matplotlib.pyplot as plt
 
 # сумма квадратов эл-тов списка
 def square_sum(arr):
@@ -124,7 +123,7 @@ def print_pow_2(my_list):
 
 # красивый вывод quadratic
 def print_quadratic(my_list):
-    print(f"Quadratic: y = {is_below_zero(my_list[1])} {abs(my_list[0])}*x^2 {is_below_zero(my_list[1])} {abs(my_list[1])}*x {is_below_zero(my_list[2])} {abs(my_list[2])}\n")
+    print(f"Quadratic: y = {is_below_zero(my_list[0])} {abs(my_list[0])}*x^2 {is_below_zero(my_list[1])} {abs(my_list[1])}*x {is_below_zero(my_list[2])} {abs(my_list[2])}\n")
 
 
 # 1.1. y = ax + b - linear
@@ -201,16 +200,47 @@ def quadratic_fun(x_list, y_list):
     return [a, b, c]
 
 
+# возвращает значение линейной функции в текущей точке икс
+def return_linear(my_fun, cur_x):
+    return my_fun[0] * cur_x + my_fun[1]
+
+
+# возвращает значение показательной функции в текущей точке икс
+def return_power(my_fun, cur_x):
+    return my_fun[0] * pow(cur_x, my_fun[1])
+
+
+# возвращает значение показательной 2 вида функции в текущей точке икс
+def return_power_2(my_fun, cur_x):
+    return my_fun[0] * pow(math.e, my_fun[1] * cur_x)
+
+
+# возвращает значение квадратичной функции в текущей точке икс
+def return_quadratic(my_fun, cur_x):
+    return my_fun[0] * cur_x * cur_x + my_fun[1] * cur_x + my_fun[2]
+
+
+# погрешность по точкам x_list между y_list и my_fun
+def get_error(x_list, y_list, my_funcs, what_fun):
+    summ1, summ2, summ3, summ4 = 0, 0, 0, 0
+    return 0
+        
+
+
 # Variant 2
 x = [1, 2, 3, 4, 5, 6]
 y = [1.0, 1.5, 3.0, 4.5, 7.0, 8.5]
 
-print_lin(linear_fun(x, y))
+my_lin_fun = linear_fun(x, y)
+print_lin(my_lin_fun)
 
-print_pow(power_fun(x, y))
+my_pow_fun = power_fun(x, y)
+print_pow(my_pow_fun)
 
-print_pow_2(power_fun_2(x, y))
+my_pow_2_fun = power_fun_2(x, y)
+print_pow_2(my_pow_2_fun)
 
-print_quadratic(quadratic_fun(x, y))
+my_quad_fun = quadratic_fun(x, y)
+print_quadratic(my_quad_fun)
 
 # print(f"Non Logarithmed: {x}\n {y}\n")
