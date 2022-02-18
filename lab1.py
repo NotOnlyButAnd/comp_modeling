@@ -1,5 +1,5 @@
 import math
-
+import matplotlib.pyplot as plt
 
 # сумма квадратов эл-тов списка
 def square_sum(arr):
@@ -48,8 +48,10 @@ def det_2(matrix):
 
 # определитель матрицы 3х3
 def det_3(matrix):
-    main_diag = matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1] * matrix[1][2] * matrix[2][0] + matrix[0][2] * matrix[1][0] * matrix[2][1]
-    sec_diag = matrix[0][3] * matrix[1][2] * matrix[2][0] - matrix[0][0] * matrix[1][2] * matrix[2][1] - matrix[0][1] * matrix[1][0] * matrix[2][3]
+    main_diag = matrix[0][0] * matrix[1][1] * matrix[2][2] + matrix[0][1] * matrix[1][2] * matrix[2][0] + matrix[0][2] * \
+                matrix[1][0] * matrix[2][1]
+    sec_diag = matrix[0][2] * matrix[1][1] * matrix[2][0] + matrix[0][0] * matrix[1][2] * matrix[2][1] + matrix[0][1] * \
+               matrix[1][0] * matrix[2][2]
     return main_diag - sec_diag
 
 
@@ -81,20 +83,28 @@ def kramer_2_2(my_slae):
 
 # метод крамера для 3х3
 def kramer_3_3(my_slae):
-    t_matrix = [[my_slae[0][0], my_slae[0][1]],
-                [my_slae[1][0], my_slae[1][1]]]
-    det = det_2(t_matrix)
-    t_matrix = [[my_slae[0][2], my_slae[0][1]],
-                [my_slae[1][2], my_slae[1][1]]]
-    det_first = det_2(t_matrix)
-    t_matrix = [[my_slae[0][0], my_slae[0][2]],
-                [my_slae[1][0], my_slae[1][2]]]
-    det_sec = det_2(t_matrix)
+    t_matrix = [[my_slae[0][0], my_slae[0][1], my_slae[0][2]],
+                [my_slae[1][0], my_slae[1][1],  my_slae[1][2]],
+                [my_slae[2][0], my_slae[2][1],  my_slae[2][2]]]
+    det = det_3(t_matrix)
+    t_matrix = [[my_slae[0][3], my_slae[0][1], my_slae[0][2]],
+                [my_slae[1][3], my_slae[1][1],  my_slae[1][2]],
+                [my_slae[2][3], my_slae[2][1],  my_slae[2][2]]]
+    det_first = det_3(t_matrix)
+    t_matrix = [[my_slae[0][0], my_slae[0][3], my_slae[0][2]],
+                [my_slae[1][0], my_slae[1][3],  my_slae[1][2]],
+                [my_slae[2][0], my_slae[2][3],  my_slae[2][2]]]
+    det_sec = det_3(t_matrix)
+    t_matrix = [[my_slae[0][0], my_slae[0][1], my_slae[0][3]],
+                [my_slae[1][0], my_slae[1][1],  my_slae[1][3]],
+                [my_slae[2][0], my_slae[2][1],  my_slae[2][3]]]
+    det_third = det_3(t_matrix)
     # It's working!
-    # print(f"det: {det}, det_first: {det_first}, det_sec: {det_sec}\n")
+    # print(f"det: {det}, det_first: {det_first},\n det_sec: {det_sec}, det_third: {det_third}\n")
     a = det_first / det
     b = det_sec / det
-    return a, b
+    c = det_third / det
+    return a, b, c
 
 
 # красивый вывод linear
@@ -110,6 +120,11 @@ def print_pow(my_list):
 # красивый вывод power_2
 def print_pow_2(my_list):
     print(f"Power func 2: y = {my_list[0]} * e ^ ({my_list[1]}*x)\n")
+
+
+# красивый вывод quadratic
+def print_quadratic(my_list):
+    print(f"Quadratic: y = {is_below_zero(my_list[1])} {abs(my_list[0])}*x^2 {is_below_zero(my_list[1])} {abs(my_list[1])}*x {is_below_zero(my_list[2])} {abs(my_list[2])}\n")
 
 
 # 1.1. y = ax + b - linear
@@ -146,7 +161,7 @@ def power_fun(x_list, y_list):
     # It's working!
     # print(f"Power func: y = {beta} * x ^ {a_b[0]}\n")
     # returning beta and a
-    return([beta, a_b[0]])
+    return [beta, a_b[0]]
 
 
 # 1.3 y = beta * e^(a*x) - power 2
@@ -180,8 +195,10 @@ def quadratic_fun(x_list, y_list):
     slae = [[sum_x_4, sum_x_3, sum_x_2, sum_x_2_y],
             [sum_x_3, sum_x_2, sum_x, sum_x_y],
             [sum_x_2, sum_x, len(x_list), sum_y]]
-    
-    return []
+    # It's working!
+    # print(slae)
+    a, b, c = kramer_3_3(slae)
+    return [a, b, c]
 
 
 # Variant 2
@@ -194,6 +211,6 @@ print_pow(power_fun(x, y))
 
 print_pow_2(power_fun_2(x, y))
 
-quadratic_fun(x, y)
+print_quadratic(quadratic_fun(x, y))
 
-print(f"Non Logarithmed: {x}\n {y}\n")
+# print(f"Non Logarithmed: {x}\n {y}\n")
