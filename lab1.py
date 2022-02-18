@@ -1,4 +1,6 @@
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 
 # сумма квадратов эл-тов списка
 def square_sum(arr):
@@ -83,20 +85,20 @@ def kramer_2_2(my_slae):
 # метод крамера для 3х3
 def kramer_3_3(my_slae):
     t_matrix = [[my_slae[0][0], my_slae[0][1], my_slae[0][2]],
-                [my_slae[1][0], my_slae[1][1],  my_slae[1][2]],
-                [my_slae[2][0], my_slae[2][1],  my_slae[2][2]]]
+                [my_slae[1][0], my_slae[1][1], my_slae[1][2]],
+                [my_slae[2][0], my_slae[2][1], my_slae[2][2]]]
     det = det_3(t_matrix)
     t_matrix = [[my_slae[0][3], my_slae[0][1], my_slae[0][2]],
-                [my_slae[1][3], my_slae[1][1],  my_slae[1][2]],
-                [my_slae[2][3], my_slae[2][1],  my_slae[2][2]]]
+                [my_slae[1][3], my_slae[1][1], my_slae[1][2]],
+                [my_slae[2][3], my_slae[2][1], my_slae[2][2]]]
     det_first = det_3(t_matrix)
     t_matrix = [[my_slae[0][0], my_slae[0][3], my_slae[0][2]],
-                [my_slae[1][0], my_slae[1][3],  my_slae[1][2]],
-                [my_slae[2][0], my_slae[2][3],  my_slae[2][2]]]
+                [my_slae[1][0], my_slae[1][3], my_slae[1][2]],
+                [my_slae[2][0], my_slae[2][3], my_slae[2][2]]]
     det_sec = det_3(t_matrix)
     t_matrix = [[my_slae[0][0], my_slae[0][1], my_slae[0][3]],
-                [my_slae[1][0], my_slae[1][1],  my_slae[1][3]],
-                [my_slae[2][0], my_slae[2][1],  my_slae[2][3]]]
+                [my_slae[1][0], my_slae[1][1], my_slae[1][3]],
+                [my_slae[2][0], my_slae[2][1], my_slae[2][3]]]
     det_third = det_3(t_matrix)
     # It's working!
     # print(f"det: {det}, det_first: {det_first},\n det_sec: {det_sec}, det_third: {det_third}\n")
@@ -123,7 +125,8 @@ def print_pow_2(my_list):
 
 # красивый вывод quadratic
 def print_quadratic(my_list):
-    print(f"Quadratic: y = {is_below_zero(my_list[0])} {abs(my_list[0])}*x^2 {is_below_zero(my_list[1])} {abs(my_list[1])}*x {is_below_zero(my_list[2])} {abs(my_list[2])}\n")
+    print(
+        f"Quadratic: y = {is_below_zero(my_list[0])} {abs(my_list[0])}*x^2 {is_below_zero(my_list[1])} {abs(my_list[1])}*x {is_below_zero(my_list[2])} {abs(my_list[2])}\n")
 
 
 # 1.1. y = ax + b - linear
@@ -220,16 +223,63 @@ def return_quadratic(my_fun, cur_x):
     return my_fun[0] * cur_x * cur_x + my_fun[1] * cur_x + my_fun[2]
 
 
-# погрешность по точкам x_list между y_list и my_fun
-def get_error(x_list, y_list, my_funcs, what_fun):
-    summ1, summ2, summ3, summ4 = 0, 0, 0, 0
-    return 0
-        
+# погрешность по точкам x_list между y_list и my_funcs
+def get_better_error(x_list, y_list, my_funcs):
+    summs = [0, 0, 0, 0]
+    for i in range(len(x_list)):
+        summs[0] += (y_list[i] - return_linear(my_funcs[0], x_list[i])) * (y_list[i] - return_linear(my_funcs[0], x_list[i]))
+        summs[1] += (y_list[i] - return_power(my_funcs[1], x_list[i])) * (y_list[i] - return_power(my_funcs[1], x_list[i]))
+        summs[2] += (y_list[i] - return_power_2(my_funcs[2], x_list[i])) * (y_list[i] - return_power_2(my_funcs[2], x_list[i]))
+        summs[3] += (y_list[i] - return_quadratic(my_funcs[3], x_list[i])) * (y_list[i] - return_quadratic(my_funcs[3], x_list[i]))
+    t_min = min(summs)
+    # Probably, that's right
+    # print(f"summs: {summs}")
+    for i in range(len(summs)):
+        if t_min == summs[i]:
+            return i
 
 
-# Variant 2
+def draw_graphics(x_list):
+    # рисуем графики
+    x = np.linspace(x_list[0] - 1, x_list[-1] + 1, num=100)  # Точки по которым строятся графики
+    fig, ax = plt.subplots()
+
+    my_lin_fun_y = my_lin_fun[0] * x + my_lin_fun[1]
+    my_pow_fun_y = my_pow_fun[0] * np.power(x, my_pow_fun[1])
+    my_pow_2_fun_y = my_pow_2_fun[0] * np.exp(x * my_pow_2_fun[1])
+    my_quad_fun_y = (my_quad_fun[0] * x * x) + (my_quad_fun[1] * x) + my_quad_fun[2]
+
+    ax.plot(x, my_lin_fun_y, label=f"f(x) = {my_lin_fun[0]}*x {is_below_zero(my_lin_fun[1])} {abs(my_lin_fun[1])}")
+    ax.plot(x, my_pow_fun_y, label=f"f(x) = {my_pow_fun[0]} * x^{my_pow_fun[1]}")
+    ax.plot(x, my_pow_2_fun_y, label=f"f(x) = {my_pow_2_fun[0]} * e^({my_pow_2_fun[1]}*x)")
+    ax.plot(x, my_quad_fun_y,
+            label=f"f(x) = {is_below_zero(my_quad_fun[0])} {abs(my_quad_fun[0])}*x^2 {is_below_zero(my_quad_fun[1])} {abs(my_quad_fun[1])}*x {is_below_zero(my_quad_fun[2])} {abs(my_quad_fun[2])} ")
+
+    ax.legend(fontsize=13,
+              ncol=1,  # Количество столбцов
+              facecolor='yellowgreen',  # Цвет области
+              edgecolor='green',  # Цвет грани
+              title='Функции',  # Заголовок
+              title_fontsize='18',  # Размер шрифта заголовка
+              loc="upper right" # местонахождение
+              )
+
+    fig.set_figwidth(12)
+    fig.set_figheight(12)
+
+    for i in range(len(x_list)):
+        plt.scatter(x_list[i], y[i], s=20, color='black')  # scatter - метод для нанесения маркера в точке
+
+    plt.show()
+
+
+# Variant main
 x = [1, 2, 3, 4, 5, 6]
 y = [1.0, 1.5, 3.0, 4.5, 7.0, 8.5]
+
+# Variant 2
+x = [10, 20, 30, 40, 50, 60]
+y = [1.06, 1.33, 1.52, 1.68, 1.81, 1.91]
 
 my_lin_fun = linear_fun(x, y)
 print_lin(my_lin_fun)
@@ -242,5 +292,25 @@ print_pow_2(my_pow_2_fun)
 
 my_quad_fun = quadratic_fun(x, y)
 print_quadratic(my_quad_fun)
+
+# какая лучшая функция?
+num_better_fun = get_better_error(x, y, [my_lin_fun, my_pow_fun, my_pow_2_fun, my_quad_fun])
+if num_better_fun == 0:
+    print(f"Better is linear: ")
+    print_lin(my_lin_fun)
+elif num_better_fun == 1:
+    print(f"Better is power: ")
+    print_pow(my_pow_fun)
+elif num_better_fun == 2:
+    print(f"Better is power-2: ")
+    print_pow_2(my_pow_2_fun)
+elif num_better_fun == 3:
+    print(f"Better is quadratic: ")
+    print_quadratic(my_quad_fun)
+else:
+    print(f"!!!ERROR!!! (can't define better func)")
+
+
+draw_graphics(x)
 
 # print(f"Non Logarithmed: {x}\n {y}\n")
