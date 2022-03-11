@@ -402,7 +402,7 @@ print(f"M = {M}\n")
 
 sq_7 = square_7(M, N, x_4_max - x_4_min, y_4_max - y_4_min)
 print(f"Square by 7 formula: {sq_7}")
-print("Accurate square: 11*pi = 34.5575192")
+print("Accurate square: 11*pi = 63.585")
 
 
 fig, ax = plt.subplots()
