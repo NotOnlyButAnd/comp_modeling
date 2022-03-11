@@ -96,7 +96,10 @@ def draw_graphics(x_points, y_points, a_rect, b_rect):
     fig.set_figheight(12)
 
     for i in range(len(x_points)):
-        plt.scatter(x_points[i], y_points[i], s=20, color='black')  # scatter - метод для нанесения маркера в точке
+        if is_in_triangle(x_points[i], y_points[i]):
+            plt.scatter(x_points[i], y_points[i], s=20, color='blue')  # scatter - метод для нанесения маркера в точке
+        else:
+            plt.scatter(x_points[i], y_points[i], s=20, color='black')
 
     plt.axhline(y = 0, color = 'k')
     plt.axvline(x = 0, color = 'k')
@@ -134,7 +137,10 @@ def draw_graphics_2(x_points, y_points, a_rect, b_rect):
     fig.set_figheight(12)
 
     for i in range(len(x_points)):
-        plt.scatter(x_points[i], y_points[i], s=20, color='black')  # scatter - метод для нанесения маркера в точке
+        if is_in_fun_2(x_points[i], y_points[i]):
+            plt.scatter(x_points[i], y_points[i], s=20, color='blue')  # scatter - метод для нанесения маркера в точке
+        else:
+            plt.scatter(x_points[i], y_points[i], s=20, color='black')
 
     plt.axhline(y = 0, color = 'k')
     plt.axvline(x = 0, color = 'k')
@@ -169,7 +175,10 @@ def draw_graphics_3(x_points, y_points, a_rect, b_rect):
     fig.set_figheight(9)
 
     for i in range(len(x_points)):
-        plt.scatter(x_points[i], y_points[i], s=20, color='black')  # scatter - метод для нанесения маркера в точке
+        if is_in_circle(x_points[i], y_points[i]):
+            plt.scatter(x_points[i], y_points[i], s=20, color='blue')
+        else:
+            plt.scatter(x_points[i], y_points[i], s=20, color='black')  # scatter - метод для нанесения маркера в точке
 
     plt.axhline(y = 0, color = 'k')
     plt.axvline(x = 0, color = 'k')
@@ -258,6 +267,7 @@ print(f"M = {M}\n")
 # вычисляем площадь
 sq_7 = square_7(M, N, a, b)
 print(f"Square by 7 formula: {sq_7}")
+print(f"Accurate square: 361")
 
 # формула 5 которая всегда выдает точный результат одинаковый
 # sq_5 = square_5(N, a)
@@ -302,6 +312,7 @@ print(f"M = {M}\n")
 # вычисляем площадь
 sq_7 = square_7(M, N, a_2, b_2)
 print(f"Square by 7 formula: {sq_7}")
+print("Accurate square: 33.532")
 
 # считаем погрешности (значение интеграла из онлайн калькулятора)
 abs_err = round(abs(33.532 - sq_7), 3)
@@ -340,6 +351,7 @@ print(f"M = {M}\n")
 
 my_pi = 4 * M / N
 print(f"My PI = {my_pi}")
+print("PI: 3,1415926535")
 
 draw_graphics_3(rand_x, rand_y, a_3, b_3)
 
@@ -390,6 +402,7 @@ print(f"M = {M}\n")
 
 sq_7 = square_7(M, N, x_4_max - x_4_min, y_4_max - y_4_min)
 print(f"Square by 7 formula: {sq_7}")
+print("Accurate square: 11*pi = 34.5575192")
 
 
 fig, ax = plt.subplots()
@@ -411,7 +424,10 @@ fig.set_figheight(9)
 
 # точки рисуем
 for i in range(len(rand_x)):
-    plt.scatter(rand_x[i], rand_y[i], s=20, color='black')
+    if is_in_polar(rand_x[i], rand_y[i], A, B):
+        plt.scatter(rand_x[i], rand_y[i], s=20, color='blue')
+    else:
+        plt.scatter(rand_x[i], rand_y[i], s=20, color='black')
 
 # прямоугольник рисуем
 ax.plot([x_4_min, x_4_max, x_4_max, x_4_min, x_4_min], [y_4_max, y_4_max, y_4_min, y_4_min, y_4_max])
