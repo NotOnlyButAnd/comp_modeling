@@ -1,7 +1,3 @@
-import math
-import random
-
-
 # Метод квадратов
 # Вход: num - исходное число (INTEGER), n - кол-во повторений (INTEGER)
 # Выход: random_numbers - массив сгенерированных (Array of Float)
@@ -56,7 +52,6 @@ def mul_method(num, core, n):
 # Мультипликативный конгруэнтный метод
 def mul_congruent_method(num, multiplier, divider, n):
     random_number = []
-    capacity = len(str(num))  # Разрядность числа
 
     for i in range(n):
         new_num = num * multiplier % divider  # Берем остаток
